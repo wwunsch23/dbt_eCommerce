@@ -1,0 +1,46 @@
+version: 2
+
+models:
+  - name: stg_looker__distribution_centers
+    description: "A staging model for distribution centers"
+    columns:
+      - name: id
+        description: "The primary key for this table"
+        data_tests:
+          - unique
+          - not_null
+      - name: name
+        description: "The name of the distribution center"
+        data_tests:
+          - not_null
+      - name: latitude
+        description: "The latitude of the distribution center"
+        data_tests:
+          - not_null
+      - name: longitude
+        description: "The longitude of the distribution center"
+        data_tests:
+          - not_null
+
+  - name: stg_looker__users
+    description: "A staging model for users"
+    columns:
+      - name: id
+        description: "The primary key for this table"
+        data_tests:
+          - unique
+          - not_null
+      - name: first_name
+        description: "The user's first name"
+        data_tests:
+          - not_null
+      - name: last_name
+        description: "The user's last name"
+        data_tests:
+          - not_null
+      - name: email
+        description: "The user's email address"
+        data_tests:
+          - unique
+          - not_null
+
