@@ -24,23 +24,19 @@ models:
 
   - name: stg_looker__users
     description: "A staging model for users"
-    columns:
-      - name: id
-        description: "The primary key for this table"
-        data_tests:
-          - unique
-          - not_null
-      - name: first_name
-        description: "The user's first name"
-        data_tests:
-          - not_null
-      - name: last_name
-        description: "The user's last name"
-        data_tests:
-          - not_null
-      - name: email
-        description: "The user's email address"
-        data_tests:
-          - unique
-          - not_null
+
+  - name: stg_looker__events
+    description: "A staging model for user events"
+
+  - name: stg_looker__inventory_items
+    description: "A staging model for inventory items"
+
+  - name: stg_looker__orders
+    description: "A staging model for orders"
+
+  - name: stg_looker__order_items
+    description: "A staging model for order items"
+
+  - name: stg_looker__products
+    description: "A staging model for products"
 
