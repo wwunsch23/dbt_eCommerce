@@ -67,7 +67,8 @@ models:
         data_tests:
           - not_null
           - accepted_values:
-              values: ['Organic', 'Email', 'Facebook', 'Display', 'Search']
+              arguments:
+                values: ['Organic', 'Email', 'Facebook', 'Display', 'Search']
       - name: created_at
         description: User created at timestamp
         data_tests:
@@ -110,7 +111,8 @@ models:
         data_tests:
           - not_null
           - accepted_values:
-              values: ['Adwords', 'Email', 'Facebook', 'Organic', 'YouTube'] 
+              arguments:
+                values: ['Adwords', 'Email', 'Facebook', 'Organic', 'YouTube'] 
       - name: uri
         description: Event URI
       - name: event_type    
