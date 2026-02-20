@@ -1,5 +1,5 @@
-{% set order_items_status = 'Complete' %}
-{% set country = 'Australia' %}
+{%- set order_items_status = 'Complete' -%}
+{%- set country = 'Australia' %}
 
 WITH customer_base AS (
     SELECT 
