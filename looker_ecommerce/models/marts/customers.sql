@@ -31,7 +31,7 @@ WITH customer_base AS (
 
 , web_traffic AS (
     SELECT *
-    FROM {{ ref('int_web_traffic__counts') }}
+    FROM {{ ref('int_events__counts') }}
 )
 
 SELECT
