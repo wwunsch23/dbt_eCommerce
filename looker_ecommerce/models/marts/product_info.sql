@@ -29,9 +29,9 @@ SELECT
     pb.product_name,
     pb.product_category,
 
-    oi.sales_amount,
-    ii.cost_of_goods_sold,
-    oi.sales_amount - ii.cost_of_goods_sold AS profit
+    {{ coalesce_and_round('oi.sales_amount') }} AS sales_amount,
+    {{ coalesce_and_round('ii.cost_of_goods_sold') }} AS cost_of_goods_sold,
+    {{ coalesce_and_round('oi.sales_amount') }} - {{ coalesce_and_round('ii.cost_of_goods_sold') }} AS profit
 
 FROM product_base pb 
 LEFT JOIN inventory_items ii 
