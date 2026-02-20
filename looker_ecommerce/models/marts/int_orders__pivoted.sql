@@ -2,9 +2,9 @@
 
 SELECT 
     user_id,
-    COUNT(DISTINCT order_id) AS num_orders,
+    {{ count_distinct('order_id') }} AS num_orders,
     {%- for order_status in order_statuses %}
-    COUNT(DISTINCT CASE WHEN status = '{{ order_status }}' THEN order_id END) AS num_orders_{{ order_status | lower }}
+    {{ count_distinct('CASE WHEN status = \'' ~ order_status ~ '\' THEN order_id END') }} AS num_orders_{{ order_status | lower }}
         {%- if not loop.last %},{% endif %}
     {%- endfor %}
 FROM {{ ref('stg_looker__orders') }}
