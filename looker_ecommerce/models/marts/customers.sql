@@ -1,3 +1,6 @@
+{% set order_items_status = 'Complete' %}
+{% set country = 'Australia' %}
+
 WITH customer_base AS (
     SELECT 
         id AS user_id,
@@ -6,6 +9,7 @@ WITH customer_base AS (
         country AS customer_country,
         traffic_source AS customer_acquisition_channel
     FROM {{ ref('stg_looker__users') }}
+    WHERE country = '{{ country }}'
 )
 
 , order_items AS (
@@ -16,63 +20,34 @@ WITH customer_base AS (
         MIN(created_at) AS first_order_completed_at,
         MAX(created_at) AS last_order_completed_at,
     FROM {{ ref('stg_looker__order_items') }}
-    WHERE status = 'Complete'
+    WHERE status = '{{ order_items_status }}'
     GROUP BY 1
 )
 
 , orders AS (
-    SELECT 
-        user_id,
-        COUNT(DISTINCT order_id) AS num_orders,
-        COUNT(DISTINCT 
-            CASE WHEN status = 'Shipped'
-            THEN order_id
-            END) AS num_orders_shipped,
-        COUNT(DISTINCT 
-            CASE WHEN status = 'Complete'
-            THEN order_id
-            END) AS num_orders_complete,
-        COUNT(DISTINCT 
-            CASE WHEN status = 'Processing'
-            THEN order_id
-            END) AS num_orders_processing,
-        COUNT(DISTINCT 
-            CASE WHEN status = 'Cancelled'
-            THEN order_id
-            END) AS num_orders_cancelled,
-        COUNT(DISTINCT 
-            CASE WHEN status = 'Returned'
-            THEN order_id
-            END) AS num_orders_returned,
-    FROM {{ ref('stg_looker__orders') }}
-    GROUP BY 1
+    SELECT *
+    FROM {{ ref('int_orders__pivoted') }}
 )
 
 , web_traffic AS (
-    SELECT 
-        user_id,
-        COUNT(DISTINCT session_id) AS num_web_sessions,
-    FROM {{ ref('stg_looker__events') }}
-    GROUP BY 1
+    SELECT *
+    FROM {{ ref('int_web_traffic__counts') }}
 )
 
 SELECT
     cb.user_id,
+    -- dimension fields
     cb.customer_first_name,
     cb.customer_last_name,
     cb.customer_country,
     cb.customer_acquisition_channel,
+    -- fact fields
     oi.total_amount_spent,
     oi.total_items_purchased,
     oi.first_order_completed_at,
     oi.last_order_completed_at,
-    o.num_orders,
-    o.num_orders_shipped,
-    o.num_orders_complete,
-    o.num_orders_processing,
-    o.num_orders_cancelled,
-    o.num_orders_returned,
-    wt.num_web_sessions,
+    o.* EXCLUDE(user_id),
+    wt.* EXCLUDE(user_id)
 FROM customer_base cb
 LEFT JOIN order_items oi 
     on cb.user_id = oi.user_id
