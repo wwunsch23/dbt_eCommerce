@@ -16,7 +16,7 @@ WITH customer_base AS (
     SELECT 
         user_id,
         SUM(sale_price) AS total_amount_spent,
-        COUNT(DISTINCT id) AS total_items_purchased,
+        {{ count_distinct('id') }} AS total_items_purchased,
         MIN(created_at) AS first_order_completed_at,
         MAX(created_at) AS last_order_completed_at,
     FROM {{ ref('stg_looker__order_items') }}
