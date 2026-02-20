@@ -46,8 +46,8 @@ SELECT
     oi.total_items_purchased,
     oi.first_order_completed_at,
     oi.last_order_completed_at,
-    o.* EXCLUDE(user_id),
-    wt.* EXCLUDE(user_id)
+    o.* EXCEPT(user_id),
+    wt.* EXCEPT(user_id)
 FROM customer_base cb
 LEFT JOIN order_items oi 
     on cb.user_id = oi.user_id
