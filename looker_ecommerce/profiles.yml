@@ -1,0 +1,13 @@
+looker_ecommerce:
+  outputs:
+    dev:
+      dataset: eCommerce
+      job_execution_timeout_seconds: 300
+      job_retries: 1
+      location: US
+      method: oauth
+      priority: interactive
+      project: fair-circuit-483822-n7
+      threads: 4
+      type: bigquery
+  target: dev
